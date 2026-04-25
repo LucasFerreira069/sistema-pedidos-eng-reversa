@@ -1,7 +1,7 @@
 Parte 5 – COMPARAÇÃO DO SISTEMA DIDÁTICO
 
 Arquitetura do sistema real:
-Arquitetura web cliente-servidor, utilizando HTML, CSS, JavaScript.
+Arquitetura web cliente-servidor, utilizando HTML e CSS.
 
 Arquitetura do sistema didático:
 Arquitetura simples apenas no lado do cliente (JavaScript), sem servidor ou banco de dados.

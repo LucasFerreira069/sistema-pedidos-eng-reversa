@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cardápio – LukinhaPizzas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/inicio.css">
+  <link rel="stylesheet" href="css/cardapio.css">
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    <a class="logo" href="index.html">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/>
+        <path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/>
+        <path d="M5.71 17.11a17.04 17.04 0 0 1 11.4-11.4"/>
+      </svg>
+      LukinhaPizzas
+    </a>
+    <nav>
+      <a href="inicio.html">Início</a>
+      <a href="cardapio.html" class="active">Cardápio</a>
+      <a href="#">Promoções</a>
+      <a href="#">Sobre nós</a>
+    </nav>
+    <div class="search-wrap">
+      <div class="search-box">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+        </svg>
+        <input type="text" placeholder="Buscar pizzas, bebidas…" />
+      </div>
+      <button class="cart-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+        </svg>
+        <span class="cart-badge">2</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="section">
+  <h1 class="page-title">Cardápio</h1>
+
+  <!-- CATEGORY FILTER -->
+  <div class="filter-bar" id="category-bar"></div>
+
+  <!-- SIZE FILTER (só aparece em Pizzas) -->
+  <div class="size-wrap" id="size-wrap">
+    <h3 class="size-label">Tamanho:</h3>
+    <div class="filter-bar" id="size-bar"></div>
+  </div>
+
+  <!-- PRODUCT GRID -->
+  <div class="product-grid" id="product-grid"></div>
+
+  <!-- EMPTY STATE -->
+  <div class="empty-state" id="empty-state" style="display:none">
+    Nenhum produto disponível nesta categoria.
+  </div>
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-logo">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/>
+            <path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/>
+            <path d="M5.71 17.11a17.04 17.04 0 0 1 11.4-11.4"/>
+          </svg>
+          LukinhaPizzas
+        </div>
+        <p class="footer-desc">As melhores pizzas da cidade, entregues quentinhas na sua porta em até 30 minutos.</p>
+        <div class="social-links">
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"/>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/>
+            </svg>
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+            </svg>
+          </a>
+          <a href="#">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h3>Links rápidos</h3>
+        <ul>
+          <li><a href="index.html">Início</a></li>
+          <li><a href="cardapio.html">Cardápio</a></li>
+          <li><a href="#">Promoções</a></li>
+          <li><a href="#">Fale conosco</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Horários de funcionamento</h3>
+        <ul style="gap:.5rem">
+          <li><p>Seg - Sex: 18h - 23h</p></li>
+          <li><p>Sábado: 18h - 00h</p></li>
+          <li><p>Domingo: 18h - 23h</p></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h3>Formas de pagamento</h3>
+        <div class="payment-badges">
+          <span class="badge">PIX</span>
+          <span class="badge">Visa</span>
+          <span class="badge">Mastercard</span>
+          <span class="badge">Dinheiro</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">© 2025 PizzaExpress. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+<script>
+  /* ── DATA ── */
+  const menuData = {
+    Pizzas: [
+      { name: 'Pizza Margherita', description: 'Molho de tomate, mussarela, manjericão fresco e azeite', rating: 4.8, reviews: 120, price: 49.90, image: 'https://images.unsplash.com/photo-1671106681075-5a7233268cbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Pizza Pepperoni', description: 'Molho de tomate, mussarela e pepperoni premium', rating: 4.9, reviews: 230, price: 54.90, image: 'https://images.unsplash.com/photo-1666040401528-c8066902d8b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw2fHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Pizza Portuguesa', description: 'Presunto, ovos, cebola, azeitonas, mussarela e orégano', rating: 4.7, reviews: 145, price: 52.90, image: 'https://images.unsplash.com/photo-1597715474989-9ae8683704b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Frango com Catupiry', description: 'Frango desfiado, catupiry original, milho e mussarela', rating: 4.8, reviews: 189, price: 51.90, image: 'https://images.unsplash.com/photo-1642789736356-d7122adfe91b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw4fHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Pizza Calabresa', description: 'Calabresa fatiada, cebola, mussarela e azeitonas', rating: 4.7, reviews: 156, price: 48.90, image: 'https://images.unsplash.com/photo-1671106681075-5a7233268cbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Pizza Quatro Queijos', description: 'Mussarela, provolone, parmesão, catupiry e orégano', rating: 4.9, reviews: 203, price: 56.90, image: 'https://images.unsplash.com/photo-1666040401528-c8066902d8b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw2fHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Bebidas: [
+      { name: 'Coca-Cola 2L', description: 'Refrigerante Coca-Cola gelado 2 litros', rating: 4.6, reviews: 89, price: 12.90, image: 'https://images.unsplash.com/photo-1652922664558-03d0f2932e58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmlua3MlMjBiZXZlcmFnZXN8ZW58MXx8fHwxNzc2OTgxNjc3fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Suco de Laranja', description: 'Suco natural de laranja 500ml', rating: 4.8, reviews: 67, price: 10.90, image: 'https://images.unsplash.com/photo-1632996988606-274cfd06eb68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxkcmlua3MlMjBiZXZlcmFnZXN8ZW58MXx8fHwxNzc2OTgxNjc3fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Guaraná Antarctica 2L', description: 'Refrigerante Guaraná Antarctica gelado 2 litros', rating: 4.5, reviews: 74, price: 11.90, image: 'https://images.unsplash.com/photo-1653122024753-d7322d90b3d7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwyfHxkcmlua3MlMjBiZXZlcmFnZXN8ZW58MXx8fHwxNzc2OTgxNjc3fDA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Porções: [
+      { name: 'Batata Frita Grande', description: 'Porção generosa de batatas fritas crocantes', rating: 4.8, reviews: 167, price: 24.90, image: 'https://images.unsplash.com/photo-1682613886162-49f5e074c092?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVuY2glMjBmcmllcyUyMGZvb2R8ZW58MXx8fHwxNzc2OTgxOTU1fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Onion Rings', description: 'Anéis de cebola empanados e fritos (12 unidades)', rating: 4.7, reviews: 132, price: 22.90, image: 'https://images.unsplash.com/photo-1688978181542-87a886a16fbe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwyfHxmcmVuY2glMjBmcmllcyUyMGZvb2R8ZW58MXx8fHwxNzc2OTgxOTU1fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Porção de Mussarela', description: 'Palitos de mussarela empanados com molho especial', rating: 4.6, reviews: 98, price: 26.90, image: 'https://images.unsplash.com/photo-1623610934157-0fcb6d50e90f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxmcmVuY2glMjBmcmllcyUyMGZvb2R8ZW58MXx8fHwxNzc2OTgxOTU1fDA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Sobremesas: [
+      { name: 'Brownie de Chocolate', description: 'Delicioso brownie com calda de chocolate e sorvete', rating: 4.9, reviews: 201, price: 18.90, image: 'https://images.unsplash.com/photo-1607257882338-70f7dd2ae344?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxkZXNzZXJ0JTIwY2FrZXxlbnwxfHx8fDE3NzY5NjE0NDF8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Petit Gateau', description: 'Bolinho de chocolate quente com sorvete de baunilha', rating: 5.0, reviews: 178, price: 22.90, image: 'https://images.unsplash.com/photo-1680090966824-eb9e8500bc2b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwyfHxkZXNzZXJ0JTIwY2FrZXxlbnwxfHx8fDE3NzY5NjE0NDF8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Tiramisu', description: 'Sobremesa italiana com café e mascarpone', rating: 4.8, reviews: 145, price: 19.90, image: 'https://images.unsplash.com/photo-1679942262057-d5732f732841?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkZXNzZXJ0JTIwY2FrZXxlbnwxfHx8fDE3NzY5NjE0NDF8MA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Saladas: [
+      { name: 'Salada Caesar', description: 'Alface romana, croutons, parmesão e molho caesar', rating: 4.5, reviews: 87, price: 28.90, image: 'https://images.unsplash.com/photo-1652922664558-03d0f2932e58?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkcmlua3MlMjBiZXZlcmFnZXN8ZW58MXx8fHwxNzc2OTgxNjc3fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Salada Caprese', description: 'Tomate, mussarela de búfala, manjericão e azeite', rating: 4.7, reviews: 93, price: 26.90, image: 'https://images.unsplash.com/photo-1632996988606-274cfd06eb68?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxkcmlua3MlMjBiZXZlcmFnZXN8ZW58MXx8fHwxNzc2OTgxNjc3fDA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Combos: [
+      { name: 'Combo Família', description: '2 pizzas grandes + 2 refrigerantes 2L + 1 sobremesa', rating: 4.9, reviews: 234, price: 119.90, image: 'https://images.unsplash.com/photo-1671106681075-5a7233268cbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Combo Casal', description: '1 pizza grande + 1 refrigerante 2L + 1 sobremesa', rating: 4.8, reviews: 178, price: 79.90, image: 'https://images.unsplash.com/photo-1666040401528-c8066902d8b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw2fHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Combo Individual', description: '1 pizza média + 1 refrigerante lata', rating: 4.6, reviews: 145, price: 45.90, image: 'https://images.unsplash.com/photo-1597715474989-9ae8683704b3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ],
+    Lanches: [
+      { name: 'X-Burger Especial', description: 'Hambúrguer, queijo, alface, tomate e molho especial', rating: 4.7, reviews: 156, price: 32.90, image: 'https://images.unsplash.com/photo-1623610934157-0fcb6d50e90f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxmcmVuY2glMjBmcmllcyUyMGZvb2R8ZW58MXx8fHwxNzc2OTgxOTU1fDA&ixlib=rb-4.1.0&q=80&w=1080' },
+      { name: 'Hot Dog Completo', description: 'Salsicha, milho, batata palha, purê e molhos', rating: 4.5, reviews: 124, price: 18.90, image: 'https://images.unsplash.com/photo-1682613886162-49f5e074c092?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxmcmVuY2glMjBmcmllcyUyMGZvb2R8ZW58MXx8fHwxNzc2OTgxOTU1fDA&ixlib=rb-4.1.0&q=80&w=1080' }
+    ]
+  };
+
+  const categories = Object.keys(menuData);
+  const sizes = ['Broto', 'Média', 'Grande'];
+  let selectedCategory = 'Pizzas';
+  let selectedSize = 'Grande';
+
+  /* ── RENDER CATEGORY BUTTONS ── */
+  const categoryBar = document.getElementById('category-bar');
+  categories.forEach(cat => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn' + (cat === selectedCategory ? ' active' : '');
+    btn.textContent = cat;
+    btn.onclick = () => {
+      selectedCategory = cat;
+      document.querySelectorAll('#category-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderSizeFilter();
+      renderProducts();
+    };
+    categoryBar.appendChild(btn);
+  });
+
+  /* ── RENDER SIZE BUTTONS ── */
+  const sizeBar = document.getElementById('size-bar');
+  const sizeWrap = document.getElementById('size-wrap');
+
+  function renderSizeFilter() {
+    sizeWrap.style.display = selectedCategory === 'Pizzas' ? 'block' : 'none';
+  }
+
+  sizes.forEach(size => {
+    const btn = document.createElement('button');
+    btn.className = 'filter-btn filter-btn--sm' + (size === selectedSize ? ' active' : '');
+    btn.textContent = size;
+    btn.onclick = () => {
+      selectedSize = size;
+      document.querySelectorAll('#size-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    };
+    sizeBar.appendChild(btn);
+  });
+
+  renderSizeFilter();
+
+  /* ── RENDER PRODUCTS ── */
+  const grid = document.getElementById('product-grid');
+  const emptyState = document.getElementById('empty-state');
+
+  function renderProducts() {
+    const products = menuData[selectedCategory] || [];
+    grid.innerHTML = '';
+
+    if (products.length === 0) {
+      grid.style.display = 'none';
+      emptyState.style.display = 'block';
+      return;
+    }
+
+    grid.style.display = 'grid';
+    emptyState.style.display = 'none';
+    products.forEach(p => {
+      const card = document.createElement('div');
+      card.className = 'menu-card';
+      card.innerHTML = `
+        <div class="menu-card__img">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+        </div>
+        <div class="menu-card__body">
+          <h3>${p.name}</h3>
+          <p>${p.description}</p>
+          <div class="menu-card__rating">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="#FACC15" stroke="#FACC15" stroke-width="1">
+              <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+            </svg>
+            <span>${p.rating}</span>
+            <span class="muted">(${p.reviews})</span>
+          </div>
+          <div class="menu-card__footer">
+            <span class="menu-card__price">R$ ${p.price.toFixed(2)}</span>
+            <button class="btn-add">+ Adicionar</button>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+
+    bindCardapioButtons();
+  }
+
+  renderProducts();
+</script>
+<script src="../../models/js/cart.js"></script>
+<script src="../../models/js/cardapio.js"></script>
+</body>
+</html>
