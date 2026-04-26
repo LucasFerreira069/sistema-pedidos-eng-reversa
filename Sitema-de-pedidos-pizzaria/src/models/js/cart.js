@@ -190,7 +190,7 @@ function buildCartModal() {
         <span>Total:</span>
         <strong id="cart-total">R$ 0,00</strong>
       </div>
-      <button class="cart-modal__checkout">Finalizar Pedido</button>
+      <button class="cart-modal__checkout" onclick="window.location.href='checkout.html'">Finalizar Pedido</button>
     </div>`;
   document.body.appendChild(modal);
 

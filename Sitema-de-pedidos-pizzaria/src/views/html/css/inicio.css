@@ -390,3 +390,43 @@ footer {
 
 /* SVG icons */
 svg { display: inline-block; vertical-align: middle; }
+
+
+/* busca */
+.search-box { position: relative; }
+
+.search-results {
+  display: none;
+  position: absolute;
+  top: calc(100% + .5rem);
+  left: 0;
+  right: 0;
+  background: #242424;
+  border: 1px solid #333;
+  border-radius: 1rem;
+  overflow: hidden;
+  z-index: 100;
+  max-height: 320px;
+  overflow-y: auto;
+}
+
+.search-item {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .75rem 1rem;
+  cursor: pointer;
+  transition: background .2s;
+}
+.search-item:hover { background: #2A2A2A; }
+.search-item img {
+  width: 48px;
+  height: 48px;
+  object-fit: cover;
+  border-radius: .5rem;
+  flex-shrink: 0;
+}
+.search-item div { display: flex; flex-direction: column; gap: .2rem; }
+.search-item__name { font-size: .9rem; font-weight: 600; }
+.search-item__price { font-size: .85rem; color: #E8593C; font-weight: 700; }
+.search-empty { padding: 1rem; text-align: center; color: #9CA3AF; }

@@ -11,7 +11,6 @@
 
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="nav-inner">
     <a class="logo" href="#">
@@ -25,8 +24,6 @@
     <nav>
       <a href="inicio.html" class="active">Início</a>
       <a href="cardapio.html">Cardápio</a>
-      <a href="promocoes.html">Promoções</a>
-      <a href="sobreNos.html">Sobre nós</a>
     </nav>
     <div class="search-wrap">
       <div class="search-box">
@@ -46,7 +43,6 @@
   </div>
 </header>
 
-<!-- HERO -->
 <section class="hero" id="hero">
   <!-- slides injected by JS -->
   <button class="arrow-btn arrow-prev" onclick="moveSlide(-1)">
@@ -75,14 +71,12 @@
 <div class="section">
   <div class="section-header">
     <h2 style="margin-bottom:0">Mais Pedidos</h2>
-    <a href="#">Ver todos →</a>
   </div>
   <div class="products-track-wrap">
     <div class="products-track" id="products-track"></div>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer>
   <div class="footer-inner">
     <div class="footer-grid">
@@ -148,7 +142,7 @@
 </footer>
 
 <script>
-  /* ── DATA ── */
+
   const heroSlides = [
     { title: 'As melhores pizzas da cidade', subtitle: 'Peça agora e receba em 30 minutos', image: 'https://images.unsplash.com/photo-1671106681075-5a7233268cbd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
     { title: 'Sabor autêntico, entrega rápida', subtitle: 'Pizzas artesanais feitas com amor', image: 'https://images.unsplash.com/photo-1666040401528-c8066902d8b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHw2fHxwaXp6YSUyMGZvb2QlMjBwaG90b2dyYXBoeXxlbnwxfHx8fDE3NzY5NDczMzd8MA&ixlib=rb-4.1.0&q=80&w=1080' },
@@ -175,7 +169,7 @@
     { name: 'Brownie de Chocolate', description: 'Delicioso brownie com calda de chocolate', rating: 4.9, reviews: 201, price: 18.90, image: 'https://images.unsplash.com/photo-1607257882338-70f7dd2ae344?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwzfHxkZXNzZXJ0JTIwY2FrZXxlbnwxfHx8fDE3NzY5NjE0NDF8MA&ixlib=rb-4.1.0&q=80&w=1080' }
   ];
 
-  /* ── HERO CAROUSEL ── */
+ 
   let currentSlide = 0;
   const heroEl = document.getElementById('hero');
   const dotsEl = document.getElementById('dots');
@@ -189,7 +183,6 @@
         <div class="slide-text">
           <h1>${slide.title}</h1>
           <p>${slide.subtitle}</p>
-          <a href="cardapio.html" class="btn-primary">Ver cardápio</a>
         </div>
       </div>`;
     heroEl.insertBefore(div, heroEl.firstChild);
@@ -220,7 +213,6 @@
     catEl.appendChild(div);
   });
 
-  /* ── PRODUCTS CAROUSEL ── */
   const CARD_W = 236; // 220px + 16px gap
   let scrollPos = 0;
   const track = document.getElementById('products-track');
@@ -251,6 +243,61 @@
     scrollPos = (scrollPos + 1) % products.length;
     track.style.transform = `translateX(-${scrollPos * CARD_W}px)`;
   }, 3000);
+
+
+/* Função de busca */
+const searchInput = document.querySelector('.search-box input');
+const searchResults = document.createElement('div');
+searchResults.className = 'search-results';
+document.querySelector('.search-box').appendChild(searchResults);
+
+searchInput.addEventListener('input', () => {
+  const termo = searchInput.value.toLowerCase().trim();
+  searchResults.innerHTML = '';
+
+  if (termo.length < 2) {
+    searchResults.style.display = 'none';
+    return;
+  }
+
+  const encontrados = products.filter(p =>
+    p.name.toLowerCase().includes(termo) ||
+    p.description.toLowerCase().includes(termo)
+  );
+
+  if (encontrados.length === 0) {
+    searchResults.innerHTML = '<p class="search-empty">Nenhum produto encontrado.</p>';
+    searchResults.style.display = 'block';
+    return;
+  }
+
+  encontrados.forEach(p => {
+    const item = document.createElement('div');
+    item.className = 'search-item';
+    item.innerHTML = `
+      <img src="${p.image}" alt="${p.name}" />
+      <div>
+        <span class="search-item__name">${p.name}</span>
+        <span class="search-item__price">R$ ${p.price.toFixed(2)}</span>
+      </div>`;
+    item.onclick = () => {
+      addToCart(p.name, p.price, p.image);
+      searchResults.style.display = 'none';
+      searchInput.value = '';
+    };
+    searchResults.appendChild(item);
+  });
+
+  searchResults.style.display = 'block';
+});
+
+/* Fecha ao clicar fora */
+document.addEventListener('click', (e) => {
+  if (!document.querySelector('.search-box').contains(e.target)) {
+    searchResults.style.display = 'none';
+  }
+});
+
 </script>
 <script src="../../models/js/cart.js"></script>
 <script src="../../models/js/inicio.js"></script>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Finalizar Pedido – LukinhaPizzas</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/inicio.css" />
+  <link rel="stylesheet" href="css/checkout.css" />
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <div class="nav-inner">
+    <a class="logo" href="inicio.html">
+      <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M15 11h.01"/><path d="M11 15h.01"/><path d="M16 16h.01"/>
+        <path d="m2 16 20 6-6-20A20 20 0 0 0 2 16"/>
+        <path d="M5.71 17.11a17.04 17.04 0 0 1 11.4-11.4"/>
+      </svg>
+      LukinhaPizzas
+    </a>
+    <nav>
+      <a href="inicio.html">Início</a>
+      <a href="cardapio.html">Cardápio</a>
+    </nav>
+    <div class="search-wrap">
+      <button class="cart-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/>
+          <path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>
+        </svg>
+        <span class="cart-badge">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main class="section">
+  <h1 class="page-title">Finalizar Pedido</h1>
+
+  <div class="checkout-grid">
+
+    <!-- COLUNA ESQUERDA -->
+    <div class="checkout-left">
+
+      <!-- IDENTIFICAÇÃO -->
+      <div class="checkout-card">
+        <h2 class="checkout-card__title">Identificação do Cliente</h2>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Nome completo</label>
+            <input type="text" placeholder="Digite seu nome" id="inp-nome" />
+          </div>
+          <div class="form-group">
+            <label>Telefone (WhatsApp)</label>
+            <input type="tel" placeholder="(00) 00000-0000" id="inp-telefone" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ENTREGA -->
+      <div class="checkout-card">
+        <h2 class="checkout-card__title">Entrega</h2>
+        <div class="form-stack">
+
+          <div class="form-group">
+            <label>CEP</label>
+            <div class="cep-wrap">
+              <input type="text" placeholder="00000-000" id="inp-cep" maxlength="9" />
+            </div>
+          </div>
+
+          <div class="form-row form-row--3">
+            <div class="form-group span-2">
+              <label>Rua</label>
+              <input type="text" placeholder="Nome da rua" id="inp-rua" />
+            </div>
+            <div class="form-group">
+              <label>Número</label>
+              <input type="text" placeholder="123" id="inp-numero" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Complemento</label>
+            <input type="text" placeholder="Apto, bloco, etc." id="inp-complemento" />
+          </div>
+
+          <div class="form-group">
+            <label>Bairro</label>
+            <input type="text" placeholder="Nome do bairro" id="inp-bairro" />
+          </div>
+
+          <div class="form-group">
+            <label>Ponto de referência</label>
+            <input type="text" placeholder="Ex: próximo ao mercado" id="inp-referencia" />
+          </div>
+
+        </div>
+      </div>
+
+      <!-- PAGAMENTO -->
+      <div class="checkout-card">
+        <h2 class="checkout-card__title">Pagamento</h2>
+        <div class="payment-options" id="payment-options">
+          <button class="payment-btn" data-method="dinheiro" onclick="selectPayment('dinheiro')">💵 Dinheiro</button>
+          <button class="payment-btn" data-method="cartao" onclick="selectPayment('cartao')">💳 Cartão na entrega</button>
+          <button class="payment-btn active" data-method="pix" onclick="selectPayment('pix')">PIX 🔑</button>
+        </div>
+        <div class="troco-wrap" id="troco-wrap" style="display:none">
+          <div class="form-group">
+            <label>Troco para quanto?</label>
+            <div class="troco-input-wrap">
+              <span class="troco-prefix">R$</span>
+              <input type="text" placeholder="0,00" id="inp-troco" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- COLUNA DIREITA -->
+    <div class="checkout-right">
+      <div class="checkout-card sticky-card">
+        <h2 class="checkout-card__title">Resumo do Pedido</h2>
+
+        <!-- ITENS -->
+        <div class="order-items" id="order-items"></div>
+
+        <!-- OBSERVAÇÕES -->
+        <div class="form-group" style="margin-bottom:1.5rem">
+          <label>Observações gerais</label>
+          <textarea id="inp-obs" placeholder="Ex: sem cebola, toca interfone..." rows="3"></textarea>
+        </div>
+
+        <!-- TOTAIS -->
+        <div class="order-totals">
+  <div class="order-totals__row">
+    <span>Subtotal</span>
+    <span id="subtotal-val">R$ 0,00</span>
+  </div>
+  <div class="order-totals__row">
+    <span>Desconto</span>
+    <span id="desconto-val" style="color:#2ecc71">Sem desconto</span>
+  </div>
+  <div class="order-totals__row">
+    <span>Frete</span>
+    <span id="frete-val">R$ 0,00</span>
+  </div>
+</div>
+
+        <div class="order-total-final">
+          <span>Total</span>
+          <strong id="total-val">R$ 0,00</strong>
+        </div>
+
+        <button class="btn-confirmar" onclick="confirmarPedido()">Confirmar Pedido</button>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<script src="../../models/js/cart.js"></script>
+<script src="../../services/PedidoService.js"></script>
+<script src="../../models/js/checkout.js"></script>
+</body>
+</html>
