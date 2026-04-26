@@ -101,14 +101,61 @@ function confirmarPedido() {
   try {
     const pagamento = service.processarPagamento(pedido, troco);
     service.finalizarPedido(pedido);
-    alert(`Pedido confirmado, ${nome}!\nPagamento: ${pagamento.metodo}\nEm breve entraremos em contato pelo WhatsApp.`);
+
+    const nome        = document.getElementById('inp-nome').value.trim();
+    const telefone    = document.getElementById('inp-telefone').value.trim();
+    const cep         = document.getElementById('inp-cep').value.trim();
+    const rua         = document.getElementById('inp-rua').value.trim();
+    const numero      = document.getElementById('inp-numero').value.trim();
+    const complemento = document.getElementById('inp-complemento').value.trim();
+    const bairro      = document.getElementById('inp-bairro').value.trim();
+    const referencia  = document.getElementById('inp-referencia').value.trim();
+    const obs         = document.getElementById('inp-obs').value.trim();
+    const troco       = document.getElementById('inp-troco')?.value;
+
+    const itens = pedido.itens.map(i =>
+      `• ${i.produto.nome} x${i.quantidade} — R$ ${i.getSubtotal().toFixed(2)}`
+    ).join('\n');
+
+    const total    = service.calcularTotalFinal(pedido).toFixed(2);
+    const desconto = service.calcularDesconto(pedido).toFixed(2);
+    const frete    = service.calcularFrete(pedido);
+
+    const mensagem = `
+🍕 *Novo Pedido - LukinhaPizzas*
+
+👤 *Cliente:* ${nome}
+📱 *WhatsApp:* ${telefone}
+
+📦 *Itens do Pedido:*
+${itens}
+
+🏠 *Endereço:*
+${rua}, ${numero}
+${complemento ? complemento + '\n' : ''}${bairro} — CEP: ${cep}
+${referencia ? 'Ref: ' + referencia : ''}
+
+💰 *Pagamento:* ${pagamento.metodo}
+${pagamento.troco ? '💵 Troco para: R$ ' + pagamento.troco.toFixed(2) : ''}
+
+🏷️ *Desconto:* R$ ${desconto}
+🚚 *Frete:* ${frete === 0 ? 'Grátis' : 'R$ ' + frete.toFixed(2)}
+✅ *Total: R$ ${total}*
+
+📝 *Observações:* ${obs || 'Nenhuma'}
+    `.trim();
+
+    const numeroPizzaria = '5588996353978'; // troque pelo número real
+    const url = `https://wa.me/${numeroPizzaria}?text=${encodeURIComponent(mensagem)}`;
+
     pedido = new Pedido();
     pedido.salvar();
+    window.open(url, '_blank');
     window.location.href = 'inicio.html';
+
   } catch (erro) {
     alert(erro.message);
   }
-}
 
 /* ── MÁSCARA TELEFONE ── */
 function maskTelefone() {
