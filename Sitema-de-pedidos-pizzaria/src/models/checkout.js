@@ -1,14 +1,12 @@
 /* ============================================================
-   checkout.js — lógica da página de finalizar pedido
-   Depende de: cart.js e PedidoService.js
+   checkout.js — View da página de checkout
+   Chama: PedidoController
    ============================================================ */
-
-const service = new PedidoService();
 
 document.addEventListener('DOMContentLoaded', () => {
   initCart();
   renderOrderItems();
-  calcularTotais();
+  atualizarTotais();
   maskTelefone();
   maskCep();
 });
@@ -37,21 +35,19 @@ function renderOrderItems() {
   });
 }
 
-/* ── CALCULA E EXIBE TOTAIS ── */
-function calcularTotais() {
-  const subtotal = pedido.getTotal();
-  const desconto = service.calcularDesconto(pedido);
-  const frete    = service.calcularFrete(pedido);
-  const total    = service.calcularTotalFinal(pedido);
+/* ── ATUALIZA TOTAIS VIA CONTROLLER ── */
+function atualizarTotais() {
+  /* View chama o Controller para calcular */
+  const totais = pedidoController.calcularTotais();
 
-  document.getElementById('subtotal-val').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-  document.getElementById('desconto-val').textContent = desconto > 0
-    ? `- R$ ${desconto.toFixed(2).replace('.', ',')}`
+  document.getElementById('subtotal-val').textContent = `R$ ${totais.subtotal.toFixed(2).replace('.', ',')}`;
+  document.getElementById('desconto-val').textContent = totais.desconto > 0
+    ? `- R$ ${totais.desconto.toFixed(2).replace('.', ',')}`
     : 'Sem desconto';
-  document.getElementById('frete-val').textContent = frete === 0
+  document.getElementById('frete-val').textContent = totais.frete === 0
     ? 'Grátis'
-    : `R$ ${frete.toFixed(2).replace('.', ',')}`;
-  document.getElementById('total-val').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+    : `R$ ${totais.frete.toFixed(2).replace('.', ',')}`;
+  document.getElementById('total-val').textContent = `R$ ${totais.total.toFixed(2).replace('.', ',')}`;
 }
 
 /* ── SELEÇÃO DE PAGAMENTO ── */
@@ -60,9 +56,8 @@ function selectPayment(method) {
     btn.classList.toggle('active', btn.dataset.method === method);
   });
 
-  if (method === 'dinheiro') service.setEstrategiaPagamento(new PagamentoDinheiro());
-  else if (method === 'cartao') service.setEstrategiaPagamento(new PagamentoCartao());
-  else service.setEstrategiaPagamento(new PagamentoPix());
+  /* View chama o Controller para trocar a estratégia */
+  pedidoController.selecionarPagamento(method);
 
   document.getElementById('troco-wrap').style.display = method === 'dinheiro' ? 'block' : 'none';
 }
@@ -85,41 +80,30 @@ async function buscarCep() {
 
 /* ── CONFIRMAR PEDIDO ── */
 function confirmarPedido() {
-  const nome     = document.getElementById('inp-nome').value.trim();
-  const telefone = document.getElementById('inp-telefone').value.trim();
-  const cep      = document.getElementById('inp-cep').value.trim();
-  const rua      = document.getElementById('inp-rua').value.trim();
-  const numero   = document.getElementById('inp-numero').value.trim();
-  const bairro   = document.getElementById('inp-bairro').value.trim();
-  const troco    = document.getElementById('inp-troco')?.value;
-
-  if (!nome || !telefone || !cep || !rua || !numero || !bairro) {
-    alert('Por favor, preencha todos os campos obrigatórios.');
-    return;
-  }
+  const nome        = document.getElementById('inp-nome').value.trim();
+  const telefone    = document.getElementById('inp-telefone').value.trim();
+  const cep         = document.getElementById('inp-cep').value.trim();
+  const rua         = document.getElementById('inp-rua').value.trim();
+  const numero      = document.getElementById('inp-numero').value.trim();
+  const complemento = document.getElementById('inp-complemento').value.trim();
+  const bairro      = document.getElementById('inp-bairro').value.trim();
+  const referencia  = document.getElementById('inp-referencia').value.trim();
+  const obs         = document.getElementById('inp-obs').value.trim();
+  const troco       = document.getElementById('inp-troco')?.value;
+  const metodoPagamento = document.querySelector('.payment-btn.active')?.dataset.method || 'pix';
 
   try {
-    const pagamento = service.processarPagamento(pedido, troco);
-    service.finalizarPedido(pedido);
+    /* View monta os dados e chama o Controller */
+    const resultado = pedidoController.confirmarPedido({
+      nome, telefone, cep, rua, numero,
+      bairro, complemento, referencia,
+      obs, metodoPagamento, troco
+    });
 
-    const nome        = document.getElementById('inp-nome').value.trim();
-    const telefone    = document.getElementById('inp-telefone').value.trim();
-    const cep         = document.getElementById('inp-cep').value.trim();
-    const rua         = document.getElementById('inp-rua').value.trim();
-    const numero      = document.getElementById('inp-numero').value.trim();
-    const complemento = document.getElementById('inp-complemento').value.trim();
-    const bairro      = document.getElementById('inp-bairro').value.trim();
-    const referencia  = document.getElementById('inp-referencia').value.trim();
-    const obs         = document.getElementById('inp-obs').value.trim();
-    const troco       = document.getElementById('inp-troco')?.value;
-
+    /* Monta a mensagem do WhatsApp */
     const itens = pedido.itens.map(i =>
       `• ${i.produto.nome} x${i.quantidade} — R$ ${i.getSubtotal().toFixed(2)}`
     ).join('\n');
-
-    const total    = service.calcularTotalFinal(pedido).toFixed(2);
-    const desconto = service.calcularDesconto(pedido).toFixed(2);
-    const frete    = service.calcularFrete(pedido);
 
     const mensagem = `
 🍕 *Novo Pedido - LukinhaPizzas*
@@ -135,27 +119,29 @@ ${rua}, ${numero}
 ${complemento ? complemento + '\n' : ''}${bairro} — CEP: ${cep}
 ${referencia ? 'Ref: ' + referencia : ''}
 
-💰 *Pagamento:* ${pagamento.metodo}
-${pagamento.troco ? '💵 Troco para: R$ ' + pagamento.troco.toFixed(2) : ''}
+💰 *Pagamento:* ${resultado.pagamento.metodo}
+${resultado.pagamento.troco ? '💵 Troco para: R$ ' + resultado.pagamento.troco.toFixed(2) : ''}
 
-🏷️ *Desconto:* R$ ${desconto}
-🚚 *Frete:* ${frete === 0 ? 'Grátis' : 'R$ ' + frete.toFixed(2)}
-✅ *Total: R$ ${total}*
+🏷️ *Desconto:* R$ ${resultado.desconto.toFixed(2)}
+🚚 *Frete:* ${resultado.frete === 0 ? 'Grátis' : 'R$ ' + resultado.frete.toFixed(2)}
+✅ *Total: R$ ${resultado.total.toFixed(2)}*
 
 📝 *Observações:* ${obs || 'Nenhuma'}
     `.trim();
 
-    const numeroPizzaria = '5588996353978'; // troque pelo número real
+    const numeroPizzaria = '558896353978';
     const url = `https://wa.me/${numeroPizzaria}?text=${encodeURIComponent(mensagem)}`;
 
-    pedido = new Pedido();
-    pedido.salvar();
+   PedidoSingleton.resetar();
+pedido = PedidoSingleton.getInstance();
+pedido.salvar();
     window.open(url, '_blank');
     window.location.href = 'inicio.html';
 
   } catch (erro) {
     alert(erro.message);
   }
+}
 
 /* ── MÁSCARA TELEFONE ── */
 function maskTelefone() {

@@ -58,14 +58,6 @@
   <div class="dots" id="dots"></div>
 </section>
 
-<!-- CATEGORIES -->
-<div class="section">
-  <h2>Categorias</h2>
-  <div class="categories-wrap">
-    <div class="categories-scroll" id="categories"></div>
-    <div class="fade-right"></div>
-  </div>
-</div>
 
 <!-- FEATURED PRODUCTS -->
 <div class="section">
@@ -204,15 +196,6 @@
   function moveSlide(dir) { goSlide(currentSlide + dir); }
   setInterval(() => moveSlide(1), 4000);
 
-  /* ── CATEGORIES ── */
-  const catEl = document.getElementById('categories');
-  categories.forEach(cat => {
-    const div = document.createElement('div');
-    div.className = 'category-card';
-    div.innerHTML = `<span class="emoji">${cat.emoji}</span><span>${cat.label}</span>`;
-    catEl.appendChild(div);
-  });
-
   const CARD_W = 236; // 220px + 16px gap
   let scrollPos = 0;
   const track = document.getElementById('products-track');
@@ -299,7 +282,14 @@ document.addEventListener('click', (e) => {
 });
 
 </script>
-<script src="../../models/js/cart.js"></script>
-<script src="../../models/js/inicio.js"></script>
+<script src="../../repositories/PedidoRepository.js"></script>
+<script src="../../repositories/ProdutoRepository.js"></script>
+<script src="../../models/PedidoSingleton.js"></script>
+<script src="../../models/ProdutoFactory.js"></script>
+<script src="../../models/cart.js"></script>
+<script src="../../services/PedidoService.js"></script>
+<script src="../../controllers/PedidoController.js"></script>
+<script src="../../controllers/ProdutoController.js"></script>
+<script src="../../models/inicio.js"></script>
 </body>
 </html>

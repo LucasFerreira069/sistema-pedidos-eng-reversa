@@ -1,6 +1,6 @@
 /* ============================================================
-   cart.js — carrinho orientado a objetos
-   Usado por: inicio.js e cardapio.js
+   cart.js — Model + UI do carrinho
+   Chama: PedidoController
    ============================================================ */
 
 /* ── CLASSE PRODUTO ── */
@@ -20,7 +20,6 @@ class ItemPedido {
   }
 
   incrementar() { this.quantidade++; }
-
   decrementar() { this.quantidade--; }
 
   getSubtotal() {
@@ -64,65 +63,42 @@ class Pedido {
   }
 
   salvar() {
-    const dados = this.itens.map(item => ({
-      nome:       item.produto.nome,
-      preco:      item.produto.preco,
-      imagem:     item.produto.imagem,
-      quantidade: item.quantidade
-    }));
-    localStorage.setItem('pizzaCart', JSON.stringify(dados));
-  }
-
-  static carregar() {
-    const pedido = new Pedido();
-    const dados  = JSON.parse(localStorage.getItem('pizzaCart')) || [];
-    dados.forEach(d => {
-      const produto   = new Produto(d.nome, d.preco, d.imagem);
-      const item      = new ItemPedido(produto);
-      item.quantidade = d.quantidade;
-      pedido.itens.push(item);
-    });
-    return pedido;
-  }
+  const repo = new PedidoRepository();
+  repo.salvar(this);
 }
 
-/* ── INSTÂNCIA GLOBAL DO PEDIDO ── */
-let pedido = Pedido.carregar();
+static carregar() {
+  const repo = new PedidoRepository();
+  return repo.carregar();
+}
 
-/* ── FUNÇÕES CHAMADAS PELOS BOTÕES DO HTML ── */
+}
+let pedido = PedidoSingleton.getInstance();
+let pedidoController;
+
+/* ── FUNÇÕES DELEGADAS AO CONTROLLER ── */
 function addToCart(nome, preco, imagem) {
-  const produto = new Produto(nome, preco, imagem);
-  pedido.adicionarItem(produto);
-  pedido.salvar();
-  updateCartUI();
-  showCartFeedback();
+  pedidoController.adicionarAoCarrinho(nome, preco, imagem);
 }
 
 function removeFromCart(nome) {
-  pedido.removerItem(nome);
-  pedido.salvar();
-  updateCartUI();
-  renderCartItems();
+  pedidoController.removerDoCarrinho(nome);
 }
 
 function removeItemFully(nome) {
-  pedido.removerItemCompleto(nome);
-  pedido.salvar();
-  updateCartUI();
-  renderCartItems();
+  pedidoController.removerItemCompleto(nome);
 }
 
-/* ── ATUALIZA BADGE DO CARRINHO ── */
+/* ── UI DO CARRINHO ── */
 function updateCartUI() {
   const badge = document.querySelector('.cart-badge');
   const qty   = pedido.getQuantidadeTotal();
   if (badge) {
-    badge.textContent = qty;
+    badge.textContent   = qty;
     badge.style.display = qty > 0 ? 'flex' : 'none';
   }
 }
 
-/* ── FEEDBACK VISUAL AO ADICIONAR ── */
 function showCartFeedback() {
   const badge = document.querySelector('.cart-badge');
   if (!badge) return;
@@ -130,7 +106,6 @@ function showCartFeedback() {
   setTimeout(() => badge.style.transform = 'scale(1)', 200);
 }
 
-/* ── RENDERIZA ITENS DO MODAL ── */
 function renderCartItems() {
   const list     = document.getElementById('cart-list');
   const emptyMsg = document.getElementById('cart-empty');
@@ -168,7 +143,6 @@ function renderCartItems() {
   if (totalEl) totalEl.textContent = `R$ ${pedido.getTotal().toFixed(2).replace('.', ',')}`;
 }
 
-/* ── MODAL DO CARRINHO ── */
 function buildCartModal() {
   if (document.getElementById('cart-modal')) return;
 
@@ -201,13 +175,7 @@ function buildCartModal() {
       .cart-modal { position: fixed; inset: 0; z-index: 999; display: none; }
       .cart-modal.open { display: flex; }
       .cart-modal__overlay { position: absolute; inset: 0; background: rgba(0,0,0,.6); }
-      .cart-modal__panel {
-        position: absolute; right: 0; top: 0; bottom: 0;
-        width: 400px; max-width: 100vw;
-        background: #1A1A1A; border-left: 1px solid #333;
-        display: flex; flex-direction: column;
-        padding: 1.5rem; gap: 1rem; overflow-y: auto;
-      }
+      .cart-modal__panel { position: absolute; right: 0; top: 0; bottom: 0; width: 400px; max-width: 100vw; background: #1A1A1A; border-left: 1px solid #333; display: flex; flex-direction: column; padding: 1.5rem; gap: 1rem; overflow-y: auto; }
       .cart-modal__header { display: flex; align-items: center; justify-content: space-between; }
       .cart-modal__header h2 { font-size: 1.4rem; font-weight: 700; }
       .cart-modal__close { background: none; border: none; color: #fff; font-size: 1.3rem; cursor: pointer; }
@@ -219,12 +187,7 @@ function buildCartModal() {
       .cart-item__name { font-size: .9rem; font-weight: 600; }
       .cart-item__price { font-size: .85rem; color: #E8593C; font-weight: 700; }
       .cart-item__controls { display: flex; align-items: center; gap: .4rem; }
-      .cart-qty-btn {
-        background: #333; border: none; color: #fff;
-        width: 28px; height: 28px; border-radius: .4rem;
-        font-size: 1.1rem; cursor: pointer; display: flex;
-        align-items: center; justify-content: center; transition: background .2s;
-      }
+      .cart-qty-btn { background: #333; border: none; color: #fff; width: 28px; height: 28px; border-radius: .4rem; font-size: 1.1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background .2s; }
       .cart-qty-btn:hover { background: #E8593C; }
       .cart-qty { min-width: 20px; text-align: center; font-weight: 700; }
       .cart-remove-btn { background: none; border: none; cursor: pointer; font-size: 1rem; margin-left: .25rem; opacity: .6; transition: opacity .2s; }
@@ -241,10 +204,7 @@ function buildCartModal() {
 
 function openCart() {
   const modal = document.getElementById('cart-modal');
-  if (modal) {
-    modal.classList.add('open');
-    renderCartItems();
-  }
+  if (modal) { modal.classList.add('open'); renderCartItems(); }
 }
 
 function closeCart() {
@@ -252,10 +212,10 @@ function closeCart() {
   if (modal) modal.classList.remove('open');
 }
 
-/* ── INIT ── */
 function initCart() {
   buildCartModal();
   updateCartUI();
+  pedidoController = new PedidoController();
   const cartBtn = document.querySelector('.cart-btn');
   if (cartBtn) cartBtn.addEventListener('click', openCart);
 }
